@@ -9,7 +9,7 @@ let oldUser = await User.findOne({mail});
 
 if(oldUser){
 console.log("user already exist");
-resp.redirect("/login");
+resp.redirect("/#/login");
 }else{
 
     let user1 = new User({fname,mail,pwd,cpwd,age});
@@ -17,7 +17,7 @@ resp.redirect("/login");
     .then(
         (res)=>{
             console.log(res);
-            resp.redirect('/login')
+            resp.redirect('/#/login')
     }
 );
 
@@ -36,15 +36,15 @@ export let login = async(req,res)=>{
         User.findOne({mail}).then((resu)=>{
             console.log(resu)
             if(resu.pwd === pwd){
-                res.redirect(`/loginUser/${resu._id}`)
+                res.redirect(`/#/loginUser/${resu._id}`)
             }
             else{
-                res.send("password wrong")
+                res.redirect("/#/login")
             }
         });
     }
     else{
-        res.send('neew user');
+        res.send('/#/signup');
 
     }
 }
