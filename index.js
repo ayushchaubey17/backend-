@@ -1,6 +1,7 @@
 import express from "express";
 import fun1 from "./connection.js";
 import Listing from "./models/listing.js";
+import User from "./models/user.js";
 import routerOfAuth from "./router/authRouter.js";
 
 fun1();
@@ -31,21 +32,17 @@ app.get('/api/lists',(req,res)=>{
 })
 
 
-
-
-
-
-app.get('/api/listOne/:id',(req,res)=>{
-    console.log("req recieced");
-    
-
+app.get('/api/user/:id',(req,res)=>{
+    // res.send("hy");
     let {id} = req.params;
-   
-    // console.log(id)
-    Listing.findById(id).then((result)=>{
-        
-       
+    User.findById(id).then((result)=>{
+        // let {obj1} = result;
         res.send(result);
+        console.log(result)
     });
   
 })
+
+
+
+
