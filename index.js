@@ -5,6 +5,7 @@ import User from "./models/user.js";
 import routerOfAuth from "./router/authRouter.js";
 import routerOfWishList from "./router/wishListRouter.js";
 import Review from "./models/review.js";
+import UserListing from "./models/userAndListing.js";
 
 fun1();
 let app = express();
@@ -44,10 +45,10 @@ let newUser = new Review({name,email,review,time:new Date()});
 newUser.save().then((result)=>{
     console.log(result)
 });
-
 res.redirect('/#/review')
-
 })
+
+
 
 app.get('/api/review/get',(req,res)=>{
     Review.find({}).then((resu)=>{
@@ -57,6 +58,34 @@ app.get('/api/review/get',(req,res)=>{
     })
 })
 
+
+app.post('/api/listing/:userid',(req,res)=>{
+    console.log("req recieved")
+
+    let {userid}=req.params;
+    let {title,description,price,location,country,image} = req.body;
+
+    console.log(userid,title,description,price,location,country,image)
+    let newOne = new Listing({title,description,price,location,country,image});
+    newOne.save().then((result)=>{
+        console.log(result);
+
+        let ual = new UserListing({userId:userid,listId:result._id});
+        ual.save().then((newREs)=>{
+            console.log(newREs);
+            res.redirect(`/#/loginUser/${userid}`);
+        })
+
+        
+    });
+
+
+
+
+
+
+
+})
 
 
 app.get('/api/listOne/:id',(req,res)=>{
