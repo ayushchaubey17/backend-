@@ -3,6 +3,8 @@ import fun1 from "./connection.js";
 import Listing from "./models/listing.js";
 import User from "./models/user.js";
 import routerOfAuth from "./router/authRouter.js";
+import routerOfWishList from "./router/wishListRouter.js";
+import Review from "./models/review.js";
 
 fun1();
 let app = express();
@@ -16,6 +18,8 @@ app.use(express.urlencoded({extended : true}));
 
 app.use("/api/auth",routerOfAuth);
 
+app.use("/api/wishlist",routerOfWishList)
+
 
 app.listen(port,()=>{
     console.log("listening");
@@ -26,6 +30,39 @@ app.get('/api/lists',(req,res)=>{
     // res.send("hy");
     Listing.find().then((result)=>{
         let [ar1] = result;
+        res.send(result);
+    });
+  
+})
+
+
+app.post('/api/review',(req,res)=>{
+   console.log(req.body);
+  
+  let {name,email,review} = req.body;
+let newUser = new Review({name,email,review,time:new Date()});
+newUser.save().then((result)=>{
+    console.log(result)
+});
+
+res.redirect('/#/review')
+
+})
+
+app.get('/api/review/get',(req,res)=>{
+    Review.find({}).then((resu)=>{
+        console.log("req recieved")
+        console.log(resu);
+        res.send(resu);
+    })
+})
+
+
+
+app.get('/api/listOne/:id',(req,res)=>{
+    let {id} = req.params;
+    Listing.findById(id).then((result)=>{
+       console.log(result)
         res.send(result);
     });
   

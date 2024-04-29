@@ -7,6 +7,7 @@ let userSchema = mongoose.Schema({
     pwd:String,
     cpwd:String,
     age:String,
+   
 
 })
 
